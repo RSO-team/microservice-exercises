@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>si.fri.rsoteam</groupId>
+    <artifactId>basketball-exercises</artifactId>
+    <version>1.0.0</version>
+
+    <modules>
+        <module>api</module>
+        <module>lib</module>
+        <module>models</module>
+        <module>services</module>
+    </modules>
+    <packaging>pom</packaging>
+
+    <name>Microservice Exercise</name>
+    <description>Microservice Exercise</description>
+
+    <properties>
+        <maven.compiler.source>15</maven.compiler.source>
+        <maven.compiler.target>15</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <kumuluzee.version>3.12.2</kumuluzee.version>
+        <kumuluzee-config.version>1.3.0</kumuluzee-config.version>
+        <kumuluzee-rest.version>1.5.1</kumuluzee-rest.version>
+        <kumuluzee-cors.version>1.0.6</kumuluzee-cors.version>
+        <postgresql.version>42.3.0</postgresql.version>
+        <kumuluzee-config-mp.version>1.4.1</kumuluzee-config-mp.version>
+        <kumuluzee-metrics.version>2.3.0</kumuluzee-metrics.version>
+        <kumuluzee-health.version>2.4.2</kumuluzee-health.version>
+        <microprofile-metrics-api.version>2.3.3</microprofile-metrics-api.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.kumuluz.ee</groupId>
+                <artifactId>kumuluzee-bom</artifactId>
+                <version>${kumuluzee.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!--            <dependency>-->
+            <!--                <artifactId>kumuluzee-config-consul</artifactId>-->
+            <!--                <groupId>com.kumuluz.ee.config</groupId>-->
+            <!--                <version>${kumuluzee-config.version}</version>-->
+            <!--            </dependency>-->
+            <dependency>
+                <groupId>com.kumuluz.ee.config</groupId>
+                <artifactId>kumuluzee-config-mp</artifactId>
+                <version>${kumuluzee-config-mp.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.kumuluz.ee.metrics</groupId>
+                <artifactId>kumuluzee-metrics-core</artifactId>
+                <version>${kumuluzee-metrics.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.kumuluz.ee.health</groupId>
+                <artifactId>kumuluzee-health</artifactId>
+                <version>${kumuluzee-health.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.microprofile.metrics</groupId>
+                <artifactId>microprofile-metrics-api</artifactId>
+                <version>${microprofile-metrics-api.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+
+    <dependencies>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.kumuluz.ee</groupId>
+                <artifactId>kumuluzee-maven-plugin</artifactId>
+                <version>${kumuluzee.version}</version>
+                <executions>
+                    <execution>
+                        <id>package</id>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

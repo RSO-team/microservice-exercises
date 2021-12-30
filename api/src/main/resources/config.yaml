@@ -1,0 +1,31 @@
+kumuluzee:
+  name: basketball-exercises
+  env:
+    name: dev
+  version: 1.0.0
+  server:
+    base-url: http://localhost:8084
+    http:
+      port: 8084
+  datasources:
+    - jndi-name: jdbc/exercisesDS
+      connection-url: jdbc:postgresql://pg-events.clvqrwayazxs.eu-central-1.rds.amazonaws.com/exercises
+      username: postgres
+      password: postgres12
+  health:
+    checks:
+      data-source-health-check:
+        type: liveness
+        jndi-name: jdbc/exercisesDS
+  metrics:
+    web-instrumentation:
+      - name: exercises-endpoint
+        url-pattern: /v1/exercises/*
+  rest-client:
+    registrations:
+      - class: exercises-api
+        url: http://localhost:8084/v1
+        read-timeout: 5000
+rest-config:
+  maintenance-mode: false
+  api-token: htn12kss3
