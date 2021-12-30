@@ -26,6 +26,18 @@ kumuluzee:
       - class: exercises-api
         url: http://localhost:8084/v1
         read-timeout: 5000
+  config:
+    start-retry-delay-ms: 500
+    max-retry-delay-ms: 900000
+    etcd:
+      hosts: http://localhost:2379
+  discovery:
+    #cluster:
+    etcd:
+      hosts: http://localhost:2379
+    ttl: 100
+    ping-interval: 5
+
 rest-config:
   maintenance-mode: false
   api-token: htn12kss3
