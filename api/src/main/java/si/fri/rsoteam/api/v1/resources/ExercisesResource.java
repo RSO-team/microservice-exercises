@@ -43,6 +43,15 @@ public class ExercisesResource {
     protected UriInfo uriInfo;
 
     @GET
+    @Operation(summary = "Get list of exercises", description = "Returns list of exercises.")
+    @APIResponses({
+            @APIResponse(
+                    description = "list of exercises",
+                    responseCode = "200",
+                    content = @Content(schema = @Schema(implementation = ExerciseDto.class, type = SchemaType.ARRAY)),
+                    headers = {@Header(name = "X-Total-Count", description = "Number of objects in list")}
+            )
+    })
     public Response getExercises() {
         return Response.ok(exercisesBean.getAllExercises()).build();
     }
@@ -50,6 +59,13 @@ public class ExercisesResource {
     @GET
     @Path("/basketball")
     @Produces(MediaType.TEXT_PLAIN)
+    @Operation(summary = "Get url for videos service", description = "Discover video service.")
+    @APIResponses({
+            @APIResponse(
+                    description = "Successfully discover video service. ",
+                    responseCode = "200"
+            )
+    })
     public Response getBasket() {
         Optional<WebTarget> optionalUrl=url.get();
         if(optionalUrl.isPresent()){
@@ -61,23 +77,52 @@ public class ExercisesResource {
 
 
     @GET
+    @Operation(summary = "Get exercise by id", description = "Returns a specific exercise by id")
+    @APIResponses({
+            @APIResponse(
+                    description = "specific exercise",
+                    responseCode = "200",
+                    content = @Content(schema = @Schema(implementation = ExerciseDto.class, type = SchemaType.ARRAY))
+            )
+    })
     @Path("/{objectId}")
     public Response getExerciseById(@PathParam("objectId") Integer id) {
         return Response.ok(exercisesBean.getExercise(id)).build();
     }
 
     @POST
+    @Operation(summary = "Create new exercise", description = "Creates a new exercise")
+    @APIResponses({
+            @APIResponse(
+                    description = "Successfully created exercise",
+                    responseCode = "201"
+            )
+    })
     public Response createExercise(ExerciseDto exerciseDto) {
         return Response.status(201).entity(exercisesBean.createExercise(exerciseDto)).build();
     }
 
     @PUT
     @Path("{objectId}")
+    @Operation(summary = "Updates specific exercise", description = "Updates specific exercise")
+    @APIResponses({
+            @APIResponse(
+                    description = "Successfully created exercise",
+                    responseCode = "201"
+            )
+    })
     public Response updateExercise(@PathParam("objectId") Integer id, ExerciseDto eventDto) {
         return Response.status(201).entity(exercisesBean.updateExercise(eventDto, id)).build();
     }
 
     @DELETE
+    @Operation(summary = "Delete specific exercise", description = "Deletes specific exercise")
+    @APIResponses({
+            @APIResponse(
+                    description = "Successfully created exercise",
+                    responseCode = "204"
+            )
+    })
     @Path("{objectId}")
     public Response deleteEvent(@PathParam("objectId") Integer id) {
         exercisesBean.deleteExercise(id);
