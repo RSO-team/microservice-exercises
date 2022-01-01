@@ -1,6 +1,10 @@
 package si.fri.rsoteam.api.v1.resources;
 
 import com.kumuluz.ee.discovery.annotations.DiscoverService;
+import com.kumuluz.ee.logs.LogManager;
+import com.kumuluz.ee.logs.Logger;
+import com.kumuluz.ee.logs.cdi.Log;
+import com.kumuluz.ee.logs.cdi.LogParams;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.enums.SchemaType;
 import org.eclipse.microprofile.openapi.annotations.headers.Header;
@@ -27,9 +31,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
-import java.net.URL;
 import java.util.Optional;
-import java.util.logging.Logger;
 
 @ApplicationScoped
 @Path("/exercises")
@@ -37,7 +39,7 @@ import java.util.logging.Logger;
 @Consumes(MediaType.APPLICATION_JSON)
 public class ExercisesResource {
 
-    private Logger log = Logger.getLogger(ExercisesResource.class.getName());
+    private Logger log = LogManager.getLogger(ExercisesResource.class.getName());
 
     @Inject
     @DiscoverService(value = "basketball-videos", environment = "dev", version = "1.0.0")
@@ -59,6 +61,7 @@ public class ExercisesResource {
                     headers = {@Header(name = "X-Total-Count", description = "Number of objects in list")}
             )
     })
+    @Log(LogParams.METRICS)
     public Response getExercises() {
         return Response.ok(exercisesBean.getAllExercises()).build();
     }
@@ -73,6 +76,7 @@ public class ExercisesResource {
                     responseCode = "200"
             )
     })
+    @Log(LogParams.METRICS)
     public Response getBasket() {
         Optional<WebTarget> optionalUrl=url.get();
         if(optionalUrl.isPresent()){
@@ -93,6 +97,7 @@ public class ExercisesResource {
             )
     })
     @Path("/{objectId}")
+    @Log(LogParams.METRICS)
     public Response getExerciseById(@PathParam("objectId") Integer id) {
         return Response.ok(exercisesBean.getExercise(id)).build();
     }
@@ -105,6 +110,7 @@ public class ExercisesResource {
                     responseCode = "201"
             )
     })
+    @Log(LogParams.METRICS)
     public Response createExercise(ExerciseDto exerciseDto) {
         return Response.status(201).entity(exercisesBean.createExercise(exerciseDto)).build();
     }
@@ -118,6 +124,7 @@ public class ExercisesResource {
                     responseCode = "201"
             )
     })
+    @Log(LogParams.METRICS)
     public Response updateExercise(@PathParam("objectId") Integer id, ExerciseDto eventDto) {
         return Response.status(201).entity(exercisesBean.updateExercise(eventDto, id)).build();
     }
@@ -131,6 +138,7 @@ public class ExercisesResource {
             )
     })
     @Path("{objectId}")
+    @Log(LogParams.METRICS)
     public Response deleteEvent(@PathParam("objectId") Integer id) {
         exercisesBean.deleteExercise(id);
         return Response.status(204).build();
