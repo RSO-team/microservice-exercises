@@ -1,5 +1,7 @@
 package si.fri.rsoteam.api.v1.filters;
 
+import com.kumuluz.ee.logs.LogManager;
+import com.kumuluz.ee.logs.Logger;
 import si.fri.rsoteam.services.config.RestConfig;
 
 import javax.inject.Inject;
@@ -8,11 +10,10 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.logging.Logger;
 
-@WebFilter("*")
+@WebFilter("/v1/*")
 public class AuthFilter implements Filter {
-    private final Logger LOG = Logger.getLogger(AuthFilter.class.getName());
+    private final Logger LOG = LogManager.getLogger(AuthFilter.class.getName());
 
     @Inject
     private RestConfig restConfig;
@@ -33,7 +34,7 @@ public class AuthFilter implements Filter {
         if (apiToken.equals(token)) {
             chain.doFilter(request, response);
         } else {
-            // httpServletResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+//             httpServletResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED);
             chain.doFilter(request, response);
         }
     }
