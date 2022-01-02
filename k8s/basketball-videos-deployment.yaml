@@ -13,7 +13,7 @@ spec:
         app: basketball-exercises
     spec:
       containers:
-        - image: lgaljo/rt_basketball_exercises:2021-12-06-04-06-53
+        - image: lgaljo/rt_basketball_exercises:latest
           name: basketball-exercises
           env:
             - name: KUMULUZEE_DATASOURCES0_CONNECTIONURL
