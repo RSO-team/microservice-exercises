@@ -4,9 +4,9 @@ kumuluzee:
     name: dev
   version: 1.0.0
   server:
-    base-url: http://localhost:8084
+    base-url: http://localhost:8088
     http:
-      port: 8084
+      port: 8088
   datasources:
     - jndi-name: jdbc/exercisesDS
       connection-url: jdbc:postgresql://pg-events.clvqrwayazxs.eu-central-1.rds.amazonaws.com/exercises
@@ -45,7 +45,7 @@ kumuluzee:
   rest-client:
     registrations:
       - class: exercises-api
-        url: http://localhost:8084/v1
+        url: http://localhost:8088/v1
         read-timeout: 5000
   config:
     start-retry-delay-ms: 500
