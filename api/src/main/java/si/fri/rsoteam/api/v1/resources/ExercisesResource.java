@@ -42,7 +42,7 @@ public class ExercisesResource {
     private Logger log = LogManager.getLogger(ExercisesResource.class.getName());
 
     @Inject
-    @DiscoverService(value = "basketball-videos", environment = "dev", version = "1.0.0")
+    @DiscoverService(value = "basketball-videos")
     private Provider<Optional<WebTarget>> url;
 
     @Inject
@@ -78,14 +78,13 @@ public class ExercisesResource {
     })
     @Log(LogParams.METRICS)
     public Response getBasket() {
-        Optional<WebTarget> optionalUrl=url.get();
-        if(optionalUrl.isPresent()){
+        Optional<WebTarget> optionalUrl = url.get();
+        if (optionalUrl.isPresent()) {
             return Response.ok(optionalUrl.get().getUri().toString()).build();
-        }else{
+        } else {
             return Response.noContent().build();
         }
     }
-
 
     @GET
     @Operation(summary = "Get exercise by id", description = "Returns a specific exercise by id")
