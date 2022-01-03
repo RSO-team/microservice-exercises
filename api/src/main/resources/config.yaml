@@ -9,10 +9,10 @@ kumuluzee:
       port: 8088
   datasources:
     - jndi-name: jdbc/exercisesDS
-      connection-url: jdbc:postgresql://pg-events.clvqrwayazxs.eu-central-1.rds.amazonaws.com/exercises
-      username: postgres
-      password: postgres12
-      max-pool-size: 3
+      connection-url: jdbc:postgresql://ella.db.elephantsql.com/rwhhuqvq
+      username: rwhhuqvq
+      password: 0afaeQId8iArwQqqEWjgwjXNV-03SATA
+      max-pool-size: 1
   health:
     checks:
       data-source-health-check:

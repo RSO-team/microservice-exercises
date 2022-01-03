@@ -17,13 +17,13 @@ spec:
           name: basketball-exercises
           env:
             - name: KUMULUZEE_DATASOURCES0_CONNECTIONURL
-              value: jdbc:postgresql://pg-events.clvqrwayazxs.eu-central-1.rds.amazonaws.com/exercises
+              value: jdbc:postgresql://ella.db.elephantsql.com/rwhhuqvq
             - name: KUMULUZEE_DATASOURCES0_USERNAME
-              value: postgres
+              value: rwhhuqvq
             - name: KUMULUZEE_DATASOURCES0_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: pg-pass
+                  name: pg-pass-exercises
                   key: KUMULUZEE_DATASOURCES0_PASSWORD
           ports:
             - containerPort: 8088
