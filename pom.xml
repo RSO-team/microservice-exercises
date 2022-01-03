@@ -45,11 +45,11 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-            <!--            <dependency>-->
-            <!--                <artifactId>kumuluzee-config-consul</artifactId>-->
-            <!--                <groupId>com.kumuluz.ee.config</groupId>-->
-            <!--                <version>${kumuluzee-config.version}</version>-->
-            <!--            </dependency>-->
+            <dependency>
+                <artifactId>kumuluzee-config-etcd</artifactId>
+                <groupId>com.kumuluz.ee.config</groupId>
+                <version>${kumuluzee-config.version}</version>
+            </dependency>
             <dependency>
                 <groupId>com.kumuluz.ee.config</groupId>
                 <artifactId>kumuluzee-config-mp</artifactId>
@@ -89,11 +89,6 @@
                 <groupId>com.kumuluz.ee</groupId>
                 <artifactId>kumuluzee-cdi-weld</artifactId>
                 <version>3.12.2</version>
-            </dependency>
-            <dependency>
-                <groupId>com.kumuluz.ee.config</groupId>
-                <artifactId>kumuluzee-config-etcd</artifactId>
-                <version>${kumuluzee-config.version}</version>
             </dependency>
             <dependency>
                 <artifactId>kumuluzee-logs-log4j2</artifactId>
