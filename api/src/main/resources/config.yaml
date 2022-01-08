@@ -56,15 +56,11 @@ kumuluzee:
     start-retry-delay-ms: 500
     max-retry-delay-ms: 900000
     etcd:
-      hosts: http://52.224.131.132:2379
-      username: rso_etcd
-      password: RsoTeam1234password!
+      hosts: http://localhost:2379
   discovery:
     #cluster:
     etcd:
-      hosts: http://52.224.131.132:2379
-      username: rso_etcd
-      password: RsoTeam1234password!
+      hosts: http://localhost:2379
     ttl: 100
     ping-interval: 5
 

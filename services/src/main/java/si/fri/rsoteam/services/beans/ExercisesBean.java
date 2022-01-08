@@ -1,16 +1,34 @@
 package si.fri.rsoteam.services.beans;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import com.kumuluz.ee.discovery.annotations.DiscoverService;
 import com.kumuluz.ee.logs.LogManager;
 import com.kumuluz.ee.logs.Logger;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
 import org.eclipse.microprofile.metrics.annotation.Timed;
 import si.fri.rsoteam.entities.ExerciseEntity;
 import si.fri.rsoteam.lib.dtos.ExerciseDto;
+import si.fri.rsoteam.lib.dtos.VideoDto;
+import si.fri.rsoteam.services.config.RestConfig;
 import si.fri.rsoteam.services.mappers.StepMapper;
 import si.fri.rsoteam.services.mappers.ExerciseMapper;
 
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,6 +42,19 @@ public class ExercisesBean {
     @Inject
     private StepsBean stepsBean;
 
+    @Inject
+    private RestConfig restConfig;
+
+    @Inject
+    @DiscoverService(value = "basketball-videos")
+    private URL videosServiceUrl;
+
+    private Client httpClient;
+
+    @PostConstruct
+    private void init() throws URISyntaxException {
+        httpClient = ClientBuilder.newClient();
+    }
 
     @Timed
     public ExerciseDto getExercise(Integer id){
@@ -39,13 +70,43 @@ public class ExercisesBean {
                 .collect(Collectors.toList());
     }
 
-    public ExerciseDto createExercise(ExerciseDto exerciseDto) {
+    public ExerciseDto createExercise(ExerciseDto exerciseDto) throws IOException {
         ExerciseEntity exerciseEntity = ExerciseMapper.dtoToEntity(exerciseDto);
         this.beginTx();
         em.persist(exerciseEntity);
         this.commitTx();
 
+        if (exerciseDto.video != null) {
+            createVideo(exerciseDto.video);
+        }
+
         return ExerciseMapper.entityToDto(exerciseEntity);
+    }
+
+    private void createVideo(VideoDto videoDto) throws IOException {
+        if (videosServiceUrl != null) {
+
+            String host = String.format("%s://%s:%s/v1/videos",
+                    videosServiceUrl.getProtocol(),
+                    videosServiceUrl.getHost(),
+                    videosServiceUrl.getPort());
+
+            ObjectWriter ow = new ObjectMapper().writer();
+            byte[] object = ow.writeValueAsBytes(videoDto);
+
+            OkHttpClient client = new OkHttpClient().newBuilder().build();
+            okhttp3.MediaType mediaType = okhttp3.MediaType.parse("application/json");
+            RequestBody body = RequestBody.create(object, mediaType);
+            Request request = new Request.Builder()
+                    .url(host)
+                    .method("POST", body)
+                    .addHeader("Content-Type", "application/json")
+                    .addHeader("apiToken", String.format("Basic %s", restConfig.getApiToken()))
+                    .build();
+            okhttp3.Response response = client.newCall(request).execute();
+
+            log.info(response.toString());
+        }
     }
 
     public ExerciseDto updateExercise(ExerciseDto exerciseDto, Integer id) {

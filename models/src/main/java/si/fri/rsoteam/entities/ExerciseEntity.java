@@ -17,7 +17,6 @@ public class ExerciseEntity implements java.io.Serializable {
     @Column(columnDefinition = "serial")
     private Integer id;
 
-
     @Size(min = 3, max = 20)
     private String name;
 

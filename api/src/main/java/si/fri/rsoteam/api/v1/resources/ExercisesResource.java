@@ -1,5 +1,6 @@
 package si.fri.rsoteam.api.v1.resources;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.kumuluz.ee.discovery.annotations.DiscoverService;
 import com.kumuluz.ee.logs.LogManager;
 import com.kumuluz.ee.logs.Logger;
@@ -31,6 +32,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
+import java.io.IOException;
 import java.util.Optional;
 
 @ApplicationScoped
@@ -110,7 +112,7 @@ public class ExercisesResource {
             )
     })
     @Log(LogParams.METRICS)
-    public Response createExercise(ExerciseDto exerciseDto) {
+    public Response createExercise(ExerciseDto exerciseDto) throws IOException {
         return Response.status(201).entity(exercisesBean.createExercise(exerciseDto)).build();
     }
 

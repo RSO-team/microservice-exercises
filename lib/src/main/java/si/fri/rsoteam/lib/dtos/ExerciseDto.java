@@ -7,6 +7,7 @@ public class ExerciseDto {
     public String name;
     public String description;
     public List<StepDto> steps;
+    public VideoDto video;
 
     public ExerciseDto() {
     }
