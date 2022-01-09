@@ -23,13 +23,10 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import javax.ws.rs.client.WebTarget;
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -47,12 +44,12 @@ public class ExercisesBean {
 
     @Inject
     @DiscoverService(value = "basketball-videos")
-    private URL videosServiceUrl;
+    private Optional<WebTarget> videosServiceUrl;
 
     private Client httpClient;
 
     @PostConstruct
-    private void init() throws URISyntaxException {
+    private void init() {
         httpClient = ClientBuilder.newClient();
     }
 
@@ -84,12 +81,10 @@ public class ExercisesBean {
     }
 
     private void createVideo(VideoDto videoDto) throws IOException {
-        if (videosServiceUrl != null) {
+        if (videosServiceUrl.isPresent()) {
 
-            String host = String.format("%s://%s:%s/v1/videos",
-                    videosServiceUrl.getProtocol(),
-                    videosServiceUrl.getHost(),
-                    videosServiceUrl.getPort());
+            String host = String.format("%s/v1/videos",
+                    videosServiceUrl.get().getUri());
 
             ObjectWriter ow = new ObjectMapper().writer();
             byte[] object = ow.writeValueAsBytes(videoDto);
@@ -101,7 +96,7 @@ public class ExercisesBean {
                     .url(host)
                     .method("POST", body)
                     .addHeader("Content-Type", "application/json")
-                    .addHeader("apiToken", String.format("Basic %s", restConfig.getApiToken()))
+                    .addHeader("apiToken", String.format("%s", restConfig.getApiToken()))
                     .build();
             okhttp3.Response response = client.newCall(request).execute();
 
