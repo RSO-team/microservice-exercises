@@ -58,7 +58,7 @@ kumuluzee:
     etcd:
       hosts: http://localhost:2379
   discovery:
-    #cluster:
+    cluster: 1
     etcd:
       hosts: http://localhost:2379
     ttl: 100
