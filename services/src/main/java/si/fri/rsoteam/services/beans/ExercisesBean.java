@@ -99,6 +99,7 @@ public class ExercisesBean {
                     .addHeader("apiToken", String.format("%s", restConfig.getApiToken()))
                     .build();
             okhttp3.Response response = client.newCall(request).execute();
+            response.close();
 
             log.info(response.toString());
         }
